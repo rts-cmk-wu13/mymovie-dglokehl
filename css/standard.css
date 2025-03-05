@@ -1,0 +1,36 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: 'Mulish', sans-serif;
+    font-weight: 400;
+    letter-spacing: 2%;
+
+    transition: background-color 200ms ease-out, color 200ms ease-out;
+}
+
+li {
+    list-style-type: none;
+}
+
+img {
+    width: 100%;
+    height: auto;
+
+    display: block;
+}
+
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+a:hover {
+    text-decoration: underline;
+}

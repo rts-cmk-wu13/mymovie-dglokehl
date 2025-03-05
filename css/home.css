@@ -1,0 +1,117 @@
+
+/* --- HEADER, FOOTER --- */
+
+header, footer {
+    height: 60px;
+}
+
+.header__nav {
+    background-color: var(--color-bg);
+}
+
+.footer__nav {
+    height: 3.75rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    background-color: light-dark(#fff, #000);
+
+    padding: 0 3.125rem;
+}
+
+.footer__icon {
+    color: var(--color-text);
+
+    cursor: pointer;
+}
+
+.footer__icon--active {
+    box-shadow: 0 5px 6px #7676BD33;
+}
+
+
+
+/* --- MAIN --- */
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    margin-top: 1rem;
+}
+
+.section__headline {
+    padding: 0 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.movie__poster {
+    border-radius: 5px;
+}
+
+
+
+/* --- NOW SHOWING --- */
+
+.nowshowing__gallery {
+    display: flex;
+    gap: 1rem;
+
+    overflow-x: scroll;
+
+    padding-left: 1.5rem;
+    padding-right: 1rem;
+}
+
+.nowshowing__movie {
+    width: 9rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+
+
+/* --- POPULAR --- */
+
+.popular__gallery {
+    /* height: 15.875rem; */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    overflow-y: scroll;
+    overflow-x: clip;
+
+    padding: 0 1.5rem 1rem;
+}
+
+.popular__movie {
+    display: flex;
+    gap: 1rem;
+}
+
+.popular__movie .movie__poster {
+    width: 5.375rem;
+}
+
+.movie__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.movie__releasedate {
+    color: var(--color-text);
+    font-size: 0.75rem;
+}
