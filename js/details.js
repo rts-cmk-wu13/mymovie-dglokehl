@@ -113,32 +113,54 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, fetchOptio
 
         let movieCastContainer = document.querySelector(".movie__cast");
 
+
+        // --- CAST --- //
+
         fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits`, fetchOptions)
             .then(res => res.json())
             .then(data => {
-                // console.log(data.cast);
+                let cast = data.cast;
+                // console.log(cast);
 
-                let cast;
-                if (data.cast.length > 4) {
-                    cast = data.cast.slice(0, 4);
+                let castShort;
+                if (cast.length > 4) {
+                    castShort = cast.slice(0, 4);
                 } else {
-                    cast = data.cast;
+                    castShort = cast;
                 }
 
-                movieCastContainer.innerHTML += cast.map(actor => {
-                    // console.log(actor);
 
-                    let actorImgUrl = actor.profile_path;
-                    let actorName = actor.name;
+                function castMap(array) {
+                    movieCastContainer.innerHTML = array.map(actor => {
+                        // console.log(actor);
+
+                        let actorImgUrl = actor.profile_path;
+                        let actorName = actor.name;
 
 
-                    return `
-                        <article class="actor">
-                            <img src="${imgUrlSmall + actorImgUrl}" alt="${actorName}" class="actor__img">
-                            <h3>${actorName}</h3>
-                        </article>
-                    `;
-                }).join("");
+                        return `
+                            <article class="actor">
+                                <img src="${imgUrlSmall + actorImgUrl}" alt="${actorName}" class="actor__img">
+                                <h3>${actorName}</h3>
+                            </article>
+                        `;
+                    }).join("");
+                }
+                castMap(castShort);
+
+
+                let seemoreBtn = document.querySelector(".seemore__btn");
+                seemoreBtn.addEventListener("click", function () {
+                    if (seemoreBtn.classList.contains("active")) {
+                        castMap(castShort);
+                        seemoreBtn.classList.remove("active")
+                        seemoreBtn.textContent = "See more"
+                    } else {
+                        castMap(cast);
+                        seemoreBtn.classList.add("active")
+                        seemoreBtn.textContent = "See less"
+                    }
+                });
             });
     })
     .catch(err => console.error(err));

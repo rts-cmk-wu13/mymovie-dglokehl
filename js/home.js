@@ -19,7 +19,7 @@ root.innerHTML = `
         <section class="nowshowing">
             <h2 class="section__headline">
                 Now Showing
-                <span class="seemore__btn">See more</span>
+                <span class="seemore__btn seemore__nowshowing">See more</span>
             </h2>
 
             <div class="gallery nowshowing__gallery"></div>
@@ -28,7 +28,7 @@ root.innerHTML = `
         <section class="popular">
             <h2 class="section__headline">
                 Popular
-                <span class="seemore__btn">See more</span>
+                <span class="seemore__btn seemore__popular">See more</span>
             </h2>
 
             <div class="gallery popular__gallery"></div>
@@ -48,27 +48,59 @@ let nowshowingGallery = root.querySelector(".nowshowing__gallery");
 let popularGallery = root.querySelector(".popular__gallery");
 
 
+
+// --- PAGINATION --- //
+
+let pageNowShowing = 1;
+let pagePopular = 1;
+
+let seemoreBtns = document.querySelectorAll(".seemore__btn");
+seemoreBtns.forEach(btn => {
+    btn.addEventListener("click", function () {
+        let maxPages = 20;
+
+        if (btn.classList.contains("seemore__nowshowing")) {
+            if (pageNowShowing < maxPages) {
+                pageNowShowing++;
+                fetchNowShowing();
+            }
+        }
+
+        if (btn.classList.contains("seemore__popular")) {
+            if (pagePopular < maxPages) {
+                pagePopular++;
+                fetchPopular();
+            }
+        }
+    });
+});
+
+
+
 // --- NOW SHOWING --- //
 
-fetch('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', fetchOptions)
-    .then(res => res.json())
-    .then(data => {
-        // console.log(data);
+function fetchNowShowing() {
+    let urlNowShowing = `https://api.themoviedb.org/3/movie/now_playing?page=${pageNowShowing}`;
 
-        nowshowingGallery.innerHTML += data.results.map(movie => {
-            // console.log(movie);
+    fetch(urlNowShowing, fetchOptions)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
 
-            let movieId = movie.id;
-            let moviePosterUrl = imgUrlLarge + movie.poster_path;
+            nowshowingGallery.innerHTML += data.results.map(movie => {
+                // console.log(movie);
 
-            let movieTitle = movie.title;
-            let imdbRating = movie.vote_average.toFixed(1);
+                let movieId = movie.id;
+                let moviePosterUrl = imgUrlLarge + movie.poster_path;
+
+                let movieTitle = movie.title;
+                let imdbRating = movie.vote_average.toFixed(1);
 
 
-            return `
+                return `
             <article class="nowshowing__movie">
                 <a href="details.html?id=${movieId}">
-                    <img src="${moviePosterUrl}" alt="${movieTitle}" class="movie__poster">
+                    <img loading="lazy" src="${moviePosterUrl}" alt="${movieTitle}" class="movie__poster">
                 </a>
                 <div class="movie__text">
                     <a href="details.html?id=${movieId}">
@@ -83,36 +115,41 @@ fetch('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', fe
                 </div>
             </article>
             `;
-        }).join("");
-        
-    })
-    .catch(err => console.error(err));
+            }).join("");
+
+        })
+        .catch(err => console.error(err));
+}
+fetchNowShowing(1);
 
 
 
 // --- POPULAR --- //
 
-fetch('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', fetchOptions)
-    .then(res => res.json())
-    .then(data => {
-        // console.log(data);
+function fetchPopular() {
+    let urlPopular = `https://api.themoviedb.org/3/movie/now_playing?page=${pagePopular}`;
 
-        popularGallery.innerHTML += data.results.map(movie => {
-            // console.log(movie);
+    fetch(urlPopular, fetchOptions)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
 
-            let movieId = movie.id;
-            let moviePosterUrl = imgUrlSmall + movie.poster_path;
+            popularGallery.innerHTML += data.results.map(movie => {
+                // console.log(movie);
 
-            let movieTitle = movie.title;
-            let imdbRating = movie.vote_average.toFixed(1);
-            let movieReleaseDate = formatDate(movie.release_date);
+                let movieId = movie.id;
+                let moviePosterUrl = imgUrlSmall + movie.poster_path;
 
-            saveToLocalStorage(movieId, movie.genre_ids);
+                let movieTitle = movie.title;
+                let imdbRating = movie.vote_average.toFixed(1);
+                let movieReleaseDate = formatDate(movie.release_date);
 
-            return `
+                saveToLocalStorage(movieId, movie.genre_ids);
+
+                return `
             <article class="popular__movie">
                 <a href="details.html?id=${movieId}">
-                    <img src="${moviePosterUrl}" alt="${movieTitle}" class="movie__poster">
+                    <img loading="lazy" src="${moviePosterUrl}" alt="${movieTitle}" class="movie__poster">
                 </a>
 
                 <div class="movie__text">
@@ -134,23 +171,26 @@ fetch('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', fe
                 </div>
             </article>
             `;
-        }).join("");
-        fetch('https://api.themoviedb.org/3/genre/movie/list', fetchOptions)
-            .then(res => res.json())
-            .then(data => {
-                let genreList = data.genres;
-                // console.log(genreList);
+            }).join("");
 
-                let movieGenreContainers = document.querySelectorAll(".movie__genre__container");
-                movieGenreContainers.forEach(container => {
-                    let movieId = container.getAttribute("data-id");
-                    let genreIds = readFromLocalStorage(movieId);
+            fetch('https://api.themoviedb.org/3/genre/movie/list', fetchOptions)
+                .then(res => res.json())
+                .then(data => {
+                    let genreList = data.genres;
+                    // console.log(genreList);
 
-                    container.innerHTML += genreIds.map(genre => {
-                        let genreName = findGenreName(genreList, genre);
-                        return `<span class="movie__genre">${genreName}</span>`;
-                    }).join("");
+                    let movieGenreContainers = document.querySelectorAll(".movie__genre__container");
+                    movieGenreContainers.forEach(container => {
+                        let movieId = container.getAttribute("data-id");
+                        let genreIds = readFromLocalStorage(movieId);
+
+                        container.innerHTML = genreIds.map(genre => {
+                            let genreName = findGenreName(genreList, genre);
+                            return `<span class="movie__genre">${genreName}</span>`;
+                        }).join("");
+                    });
                 });
-            });
-    })
-    .catch(err => console.error(err));
+        })
+        .catch(err => console.error(err));
+}
+fetchPopular();

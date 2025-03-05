@@ -49,8 +49,13 @@ main {
 }
 
 .section__headline {
-    padding: 0 1.5rem;
-    margin-bottom: 1rem;
+    position: sticky;
+    top: 60px;
+    z-index: 999;
+
+    background-color: var(--color-bg);
+
+    padding: 0 1.5rem 1rem;
 }
 
 .movie__poster {
