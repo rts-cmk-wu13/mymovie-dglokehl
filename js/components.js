@@ -3,6 +3,8 @@
 
 const root = document.querySelector("#app");
 
+let guestId = "d5fddaa6e04f2ef80eb730decde771bb";
+
 const fetchOptions = {
     method: 'GET',
     headers: {
@@ -70,37 +72,54 @@ function findGenreName(list, genreId) {
 let bookmarkArray = [];
 
 function bookmarkStorage() {
-    let bookmarkBtn = document.querySelector(".bookmark__btn");
-    bookmarkBtn.addEventListener("click", bookmarkAddRemove);
+    
+    let bookmarkBtn = document.querySelectorAll(".bookmark__btn");
+    console.log(bookmarkBtn);
+    bookmarkBtn.forEach(btn => {
+        let btnId = btn.getAttribute("data-id");
+        let movieObject = readFromLocalStorage("OBJ" + btnId);
 
-    let id = bookmarkBtn.getAttribute("data-id");
-    if (readFromLocalStorage("bookmarks") !== null) {
-        bookmarkArray = readFromLocalStorage("bookmarks");
+        // let movieObjectArray = Object.entries(movieObject);
 
-        if (bookmarkArray.includes(id)) {
-            bookmarkBtn.className = "fa-solid fa-bookmark bookmark__btn";
+        if (readFromLocalStorage("bookmarks") !== null) {
+            bookmarkArray = readFromLocalStorage("bookmarks");
+            console.log("step 1 - bookmarks has content");
+
+            if (bookmarkArray.find(i => i.id === btnId)) {
+                console.log("step 2a - id in bookmarks");
+
+                btn.className = "fa-solid fa-bookmark bookmark__btn";
+            } else {
+                console.log("step 2b - id not in bookmarks");
+            }
+        } else {
+            console.log("step 0 - bookmarks is empty");
+
+            bookmarkArray = [];
         }
-    } else {
-        bookmarkArray = [];
-    }
+
+        btn.addEventListener("click", function () {
+            let index = bookmarkArray.findIndex(i => i.id === btnId)
+
+            if (index !== -1) {
+                console.log("removing", btnId);
+
+                this.classList.add("fa-regular");
+                this.classList.remove("fa-solid");
+
+                bookmarkArray.splice(index, 1);
+                deleteFromLocalStorage("bookmarks", bookmarkArray);
+            } else {
+                console.log("adding", btnId);
+
+                this.classList.add("fa-solid");
+                this.classList.remove("fa-regular");
+
+                bookmarkArray.push(movieObject);
+                saveToLocalStorage("bookmarks", bookmarkArray);
+            }
+
+            console.log(bookmarkArray);
+        });
+    });
 }
-
-function bookmarkAddRemove() {
-    let id = this.getAttribute("data-id");
-
-
-    if (this.classList.contains("fa-solid")) {
-        this.classList.add("fa-regular");
-        this.classList.remove("fa-solid");
-
-        bookmarkArray.splice(bookmarkArray.indexOf(id), 1);
-        deleteFromLocalStorage("bookmarks", bookmarkArray);
-    } else {
-        this.classList.add("fa-solid");
-        this.classList.remove("fa-regular");
-
-        bookmarkArray.push(id);
-        saveToLocalStorage("bookmarks", bookmarkArray);
-    }
-    console.log(bookmarkArray);
-};

@@ -1,6 +1,6 @@
 
 :root {
-    background-color: #222;
+    background-color: var(--color-bg);
 
     --font-headline: 900 1rem 'Merriweather', serif;
 
@@ -125,10 +125,6 @@ input:checked + .darkmode__slider {
 #app, nav {
     max-width: 23.4375rem;
     margin: 0 auto;
-}
-
-#app {
-    background-color: var(--color-bg);
 }
 
 .header__nav {

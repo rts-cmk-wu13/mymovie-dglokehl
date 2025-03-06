@@ -31,10 +31,9 @@ let movieId = params.get("id");
 fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, fetchOptions)
     .then(res => res.json())
     .then(data => {
-        console.log(data);
+        // console.log(data);
 
         let movieBackgroundUrl = imgUrlOriginal + data.backdrop_path;
-        // mainWrapper.style.backgroundImage = `url(${movieBackgroundUrl})`
 
         let movieTitle = data.title;
         let imdbRating = data.vote_average.toFixed(1);
@@ -44,6 +43,18 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, fetchOptio
         let movieReleaseDate = formatDate(data.release_date);
 
         let movieDesc = data.overview;
+
+        let movieObjectId = `OBJ${movieId}`
+        let movieObject = {
+            "id": movieId,
+            "poster": imgUrlLarge + data.poster_path,
+            "title": movieTitle,
+            "rating": imdbRating,
+            "release_date": movieReleaseDate,
+        };
+        
+        saveToLocalStorage(movieObjectId, movieObject)
+
 
 
         mainWrapper.innerHTML = `
@@ -113,7 +124,7 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, fetchOptio
 
         let movieCastContainer = document.querySelector(".movie__cast");
 
-        bookmarkStorage()
+        bookmarkStorage();
 
 
         // --- CAST --- //
@@ -155,12 +166,12 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, fetchOptio
                 seemoreBtn.addEventListener("click", function () {
                     if (seemoreBtn.classList.contains("active")) {
                         castMap(castListShort);
-                        seemoreBtn.classList.remove("active")
-                        seemoreBtn.textContent = "See more"
+                        seemoreBtn.classList.remove("active");
+                        seemoreBtn.textContent = "See more";
                     } else {
                         castMap(castList);
-                        seemoreBtn.classList.add("active")
-                        seemoreBtn.textContent = "See less"
+                        seemoreBtn.classList.add("active");
+                        seemoreBtn.textContent = "See less";
                     }
                 });
             });

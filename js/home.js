@@ -37,9 +37,23 @@ root.innerHTML = `
 
     <footer>
         <nav class="footer__nav">
-            <i class="fa-solid fa-film footer__icon footer__icon--active"></i>
-            <i class="fa-solid fa-ticket footer__icon"></i>
-            <i class="fa-regular fa-bookmark footer__icon"></i>
+            <menu class="footer__menu">
+                <li class="menu__item">
+                    <a href="index.html" class="menu__link">
+                        <i class="fa-solid fa-film footer__icon footer__icon--active"></i>
+                    </a>
+                </li>
+                <li class="menu__item">
+                    <a href="" class="menu__link">
+                        <i class="fa-solid fa-ticket footer__icon"></i>
+                    </a>
+                </li>
+                <li class="menu__item">
+                    <a href="bookmarks.html" class="menu__link">
+                        <i class="fa-regular fa-bookmark footer__icon"></i>
+                    </a>
+                </li>
+            </menu>
         </nav>
     </footer>
 `;
@@ -119,7 +133,7 @@ function fetchNowShowing() {
         })
         .catch(err => console.error(err));
 }
-fetchNowShowing(1);
+fetchNowShowing();
 
 
 
