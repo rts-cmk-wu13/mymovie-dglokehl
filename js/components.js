@@ -65,21 +65,42 @@ function findGenreName(list, genreId) {
 }
 
 
-// function seeMoreLess() {
-//     let container = this.parentElement.parentElement;
+// --- BOOKMARKS --- //
 
-//     let exitBtn = document.createElement("i");
-//     exitBtn.className = "fa-solid fa-xmark gallery__exit";
+let bookmarkArray = [];
 
-//     if (!container.classList.contains("expanded")) {
-//         container.classList.add("expanded");
-//         container.prepend(exitBtn);
-//     }
+function bookmarkStorage() {
+    let bookmarkBtn = document.querySelector(".bookmark__btn");
+    bookmarkBtn.addEventListener("click", bookmarkAddRemove);
 
-//     exitBtn.addEventListener("click", function() {
-//         if (container.classList.contains("expanded")) {
-//             container.classList.remove("expanded")
-//             exitBtn.remove()
-//         }
-//     })
-// }
+    let id = bookmarkBtn.getAttribute("data-id");
+    if (readFromLocalStorage("bookmarks") !== null) {
+        bookmarkArray = readFromLocalStorage("bookmarks");
+
+        if (bookmarkArray.includes(id)) {
+            bookmarkBtn.className = "fa-solid fa-bookmark bookmark__btn";
+        }
+    } else {
+        bookmarkArray = [];
+    }
+}
+
+function bookmarkAddRemove() {
+    let id = this.getAttribute("data-id");
+
+
+    if (this.classList.contains("fa-solid")) {
+        this.classList.add("fa-regular");
+        this.classList.remove("fa-solid");
+
+        bookmarkArray.splice(bookmarkArray.indexOf(id), 1);
+        deleteFromLocalStorage("bookmarks", bookmarkArray);
+    } else {
+        this.classList.add("fa-solid");
+        this.classList.remove("fa-regular");
+
+        bookmarkArray.push(id);
+        saveToLocalStorage("bookmarks", bookmarkArray);
+    }
+    console.log(bookmarkArray);
+};

@@ -53,12 +53,11 @@ let popularGallery = root.querySelector(".popular__gallery");
 
 let pageNowShowing = 1;
 let pagePopular = 1;
+let maxPages = 20;
 
 let seemoreBtns = document.querySelectorAll(".seemore__btn");
 seemoreBtns.forEach(btn => {
     btn.addEventListener("click", function () {
-        let maxPages = 20;
-
         if (btn.classList.contains("seemore__nowshowing")) {
             if (pageNowShowing < maxPages) {
                 pageNowShowing++;

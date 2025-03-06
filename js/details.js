@@ -54,7 +54,7 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, fetchOptio
             <main>
                 <section class="movie__details">
                     <h1 class="movie__headline">${movieTitle}</h1>
-                    <i class="fa-regular fa-bookmark movie__bookmark"></i>
+                    <i class="fa-regular fa-bookmark bookmark__btn" data-id="${movieId}"></i>
 
                     <div class="movie__rating">
                         <i class="fa-solid fa-star movie__rating__icon"></i>
@@ -113,20 +113,22 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, fetchOptio
 
         let movieCastContainer = document.querySelector(".movie__cast");
 
+        bookmarkStorage()
+
 
         // --- CAST --- //
 
         fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits`, fetchOptions)
             .then(res => res.json())
             .then(data => {
-                let cast = data.cast;
+                let castList = data.cast;
                 // console.log(cast);
 
-                let castShort;
-                if (cast.length > 4) {
-                    castShort = cast.slice(0, 4);
+                let castListShort;
+                if (castList.length > 4) {
+                    castListShort = castList.slice(0, 4);
                 } else {
-                    castShort = cast;
+                    castListShort = castList;
                 }
 
 
@@ -146,17 +148,17 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, fetchOptio
                         `;
                     }).join("");
                 }
-                castMap(castShort);
+                castMap(castListShort);
 
 
                 let seemoreBtn = document.querySelector(".seemore__btn");
                 seemoreBtn.addEventListener("click", function () {
                     if (seemoreBtn.classList.contains("active")) {
-                        castMap(castShort);
+                        castMap(castListShort);
                         seemoreBtn.classList.remove("active")
                         seemoreBtn.textContent = "See more"
                     } else {
-                        castMap(cast);
+                        castMap(castList);
                         seemoreBtn.classList.add("active")
                         seemoreBtn.textContent = "See less"
                     }
