@@ -3,7 +3,6 @@
 
 const root = document.querySelector("#app");
 
-let guestId = "d5fddaa6e04f2ef80eb730decde771bb";
 
 const fetchOptions = {
     method: 'GET',
@@ -13,25 +12,58 @@ const fetchOptions = {
     }
 };
 
+
 let imgUrlSmall = "https://image.tmdb.org/t/p/w200";
 let imgUrlLarge = "https://image.tmdb.org/t/p/w500";
 let imgUrlOriginal = "https://image.tmdb.org/t/p/original";
 
 
 
-// --- FUNCTIONS --- //
+// --- LAYOUT --- //
 
-function saveToLocalStorage(key, value) {
-    return localStorage.setItem(key, JSON.stringify(value));
-};
+function headerContent(headline) {
+    return `
+        <nav class="header__nav">
+            <i class="fa-solid fa-bars-staggered"></i>
 
-function deleteFromLocalStorage(key, value) {
-    return localStorage.setItem(key, JSON.stringify(value));
-};
+            <h1 class="header__headline">${headline}</h1>
 
-function readFromLocalStorage(key) {
-    return JSON.parse(localStorage.getItem(key));
-};
+            <label class="darkmode">
+                <input type="checkbox" class="darkmode__switch">
+                <span class="darkmode__slider"></span>
+            </label>
+        </nav>
+    `;
+}
+
+
+function footerContent() {
+    return `
+        <nav class="footer__nav">
+            <menu class="footer__menu">
+                <li class="menu__item">
+                    <a href="index.html" class="menu__link">
+                        <i class="fa-solid fa-film footer__icon footer__icon--active"></i>
+                    </a>
+                </li>
+                <li class="menu__item">
+                    <a href="" class="menu__link">
+                        <i class="fa-solid fa-ticket footer__icon"></i>
+                    </a>
+                </li>
+                <li class="menu__item">
+                    <a href="bookmarks.html" class="menu__link">
+                        <i class="fa-regular fa-bookmark footer__icon"></i>
+                    </a>
+                </li>
+            </menu>
+        </nav>
+    `;
+}
+
+
+
+// --- FORMATTING & CALC --- //
 
 function calcRuntime(num) {
     let hours = Math.floor(num / 60);
@@ -42,10 +74,12 @@ function calcRuntime(num) {
     return result;
 }
 
+
 function formatLanguage(input) {
     let lang = new Intl.DisplayNames(['en'], { type: 'language' });
     return lang.of(input);
 }
+
 
 function formatDate(input) {
     let dateOptions = {
@@ -62,64 +96,47 @@ function formatDate(input) {
     return result;
 }
 
-function findGenreName(list, genreId) {
-    return list.find(list => list.id === genreId).name;
+
+
+// --- GENRES --- //
+
+function addGenres() {
+    fetch('https://api.themoviedb.org/3/genre/movie/list', fetchOptions)
+        .then(res => res.json())
+        .then(data => {
+            let movieGenreContainers = document.querySelectorAll(".movie__genre__container");
+            movieGenreContainers.forEach(container => {
+                let movieId = container.getAttribute("data-id");
+                let genreList = data.genres;
+                let movieGenres = readFromLocalStorage(movieId);
+
+                container.innerHTML = movieGenres.map(genre => {
+                    let genreName = genreList.find(genreList => genreList.id === genre).name;
+                    return `<span class="movie__genre">${genreName}</span>`;
+                }).join("");
+            });
+        });
 }
 
 
-// --- BOOKMARKS --- //
 
-let bookmarkArray = [];
+// --- RATING --- //
 
-function bookmarkStorage() {
-    
-    let bookmarkBtn = document.querySelectorAll(".bookmark__btn");
-    console.log(bookmarkBtn);
-    bookmarkBtn.forEach(btn => {
-        let btnId = btn.getAttribute("data-id");
-        let movieObject = readFromLocalStorage("OBJ" + btnId);
+let countryChosen = "US";
 
-        // let movieObjectArray = Object.entries(movieObject);
+function getRating(countryChosen, data) {
+    let country = data.release_dates.results.find((country) => country.iso_3166_1 === countryChosen);
+    let rating = "N/A";
 
-        if (readFromLocalStorage("bookmarks") !== null) {
-            bookmarkArray = readFromLocalStorage("bookmarks");
-            console.log("step 1 - bookmarks has content");
-
-            if (bookmarkArray.find(i => i.id === btnId)) {
-                console.log("step 2a - id in bookmarks");
-
-                btn.className = "fa-solid fa-bookmark bookmark__btn";
-            } else {
-                console.log("step 2b - id not in bookmarks");
+    if (country) {
+        country.release_dates.forEach((release) => {
+            if (release.certification) {
+                rating = release.certification;
             }
-        } else {
-            console.log("step 0 - bookmarks is empty");
-
-            bookmarkArray = [];
-        }
-
-        btn.addEventListener("click", function () {
-            let index = bookmarkArray.findIndex(i => i.id === btnId)
-
-            if (index !== -1) {
-                console.log("removing", btnId);
-
-                this.classList.add("fa-regular");
-                this.classList.remove("fa-solid");
-
-                bookmarkArray.splice(index, 1);
-                deleteFromLocalStorage("bookmarks", bookmarkArray);
-            } else {
-                console.log("adding", btnId);
-
-                this.classList.add("fa-solid");
-                this.classList.remove("fa-regular");
-
-                bookmarkArray.push(movieObject);
-                saveToLocalStorage("bookmarks", bookmarkArray);
-            }
-
-            console.log(bookmarkArray);
         });
-    });
+    } else {
+        rating = rating;
+    }
+
+    return rating;
 }

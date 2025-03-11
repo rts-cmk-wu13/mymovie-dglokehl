@@ -29,7 +29,7 @@ let params = new URLSearchParams(search);
 let movieId = params.get("id");
 
 
-fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_states%2Ccredits%2Crelease_dates&session_id=${sessionId}&language=en-US`, fetchOptions)
+fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=credits%2Crelease_dates&language=en-US`, fetchOptions)
     .then(res => res.json())
     .then(data => {
         console.log(data);
@@ -41,18 +41,22 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_
 
         let movieLength = calcRuntime(data.runtime);
         let movieLanguage = formatLanguage(data.original_language);
+        let movieReleaseDate = formatDate(data.release_date);
         let movieRating = getRating(countryChosen, data);
 
         let movieDesc = data.overview;
 
-        let movieWatchlist = data.account_states.watchlist;
+        let movieObjectId = `OBJ${movieId}`;
+        let movieObject = {
+            "id": movieId,
+            "poster": imgUrlLarge + data.poster_path,
+            "title": movieTitle,
+            "rating": imdbRating,
+            "release_date": movieReleaseDate,
+        };
 
-        let bookmarkBtnFill;
-        if (movieWatchlist) {
-            bookmarkBtnFill = "solid";
-        } else {
-            bookmarkBtnFill = "regular";
-        }
+        saveToLocalStorage(movieObjectId, movieObject);
+
 
 
         mainWrapper.innerHTML = `
@@ -63,7 +67,7 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_
             <main>
                 <section class="movie__details">
                     <h1 class="movie__headline">${movieTitle}</h1>
-                    <i class="fa-${bookmarkBtnFill} fa-bookmark bookmark__btn" data-id="${movieId}"></i>
+                    <i class="fa-regular fa-bookmark bookmark__btn" data-id="${movieId}"></i>
 
                     <div class="movie__rating">
                         <i class="fa-solid fa-star movie__rating__icon"></i>
@@ -113,6 +117,8 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_
         saveToLocalStorage(movieId, genreIds);
         addGenres();
 
+        bookmarkStorage();
+
 
         // --- CAST --- //
 
@@ -158,9 +164,112 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_
                 seemoreBtn.textContent = "See less";
             }
         });
-
-
-        let bookmarkBtn = document.querySelector(".bookmark__btn");
-        bookmarkBtn.addEventListener("click", addToWatchlist);
     })
     .catch(err => console.error(err));
+
+
+
+// --- BOOKMARKS --- //
+
+let bookmarkArray = [];
+
+function bookmarkStorage() {
+
+    let bookmarkBtn = document.querySelectorAll(".bookmark__btn");
+    // console.log(bookmarkBtn);
+    bookmarkBtn.forEach(btn => {
+        let btnId = btn.getAttribute("data-id");
+        let movieObject = readFromLocalStorage("OBJ" + btnId);
+
+        // let movieObjectArray = Object.entries(movieObject);
+
+        if (readFromLocalStorage("bookmarks") !== null) {
+            bookmarkArray = readFromLocalStorage("bookmarks");
+            console.log("step 1 - bookmarks has content");
+
+            if (bookmarkArray.find(i => i.id === btnId)) {
+                console.log("step 2a - id in bookmarks");
+
+                btn.className = "fa-solid fa-bookmark bookmark__btn";
+            } else {
+                console.log("step 2b - id not in bookmarks");
+            }
+        } else {
+            console.log("step 0 - bookmarks is empty");
+
+            bookmarkArray = [];
+        }
+
+        btn.addEventListener("click", function () {
+            let index = bookmarkArray.findIndex(i => i.id === btnId);
+
+            if (index !== -1) {
+                console.log("removing", btnId);
+
+                this.classList.add("fa-regular");
+                this.classList.remove("fa-solid");
+
+                bookmarkArray.splice(index, 1);
+                deleteFromLocalStorage("bookmarks", bookmarkArray);
+            } else {
+                console.log("adding", btnId);
+
+                this.classList.add("fa-solid");
+                this.classList.remove("fa-regular");
+
+                bookmarkArray.push(movieObject);
+                saveToLocalStorage("bookmarks", bookmarkArray);
+            }
+
+            console.log(bookmarkArray);
+        });
+    });
+}
+
+
+mainElm.innerHTML += bookmarkArray.map(movie => {
+    let movieId = movie.id;
+    let moviePosterUrl = movie.poster;
+
+    let movieTitle = movie.title;
+    let imdbRating = movie.rating;
+    let movieReleaseDate = movie.release_date;
+
+    return `
+        <article class="bookmark__movie">
+            <a href="details.html?id=${movieId}">
+                <img loading="lazy" src="${moviePosterUrl}" alt="${movieTitle}" class="movie__poster">
+            </a>
+
+            <div class="movie__text">
+                <a href="details.html?id=${movieId}">
+                    <h3 class="movie__title">
+                        ${movieTitle}
+                    </h3>
+                </a>
+
+                <span class="movie__rating">
+                    <i class="fa-solid fa-star movie__rating__icon"></i> ${imdbRating}/10 IMDb
+                </span>
+
+                <div class="movie__genre__container" data-id="${movieId}"></div>
+                        
+                <span class="movie__releasedate">
+                    <i class="fa-regular fa-calendar"></i> ${movieReleaseDate}
+                </span>
+            </div>
+            <i class="fa-solid fa-xmark bookmark__remove" data-id="${movieId}"></i>
+        </article>`;
+}).join("");
+
+let removeBtns = document.querySelectorAll(".bookmark__remove");
+removeBtns.forEach(btn => {
+    btn.addEventListener("click", function () {
+        let btnId = btn.getAttribute("data-id");
+        let index = bookmarkArray.findIndex(i => i.id === btnId);
+
+        bookmarkArray.splice(index, 1);
+        deleteFromLocalStorage("bookmarks", bookmarkArray);
+        btn.parentElement.remove();
+    });
+});

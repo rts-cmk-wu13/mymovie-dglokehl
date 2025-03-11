@@ -3,16 +3,7 @@
 
 root.innerHTML = `
     <header>
-        <nav class="header__nav">
-            <i class="fa-solid fa-bars"></i>
-
-            <h1 class="header__headline">MyMovies</h1>
-
-            <label class="darkmode">
-                <input type="checkbox" class="darkmode__switch">
-                <span class="darkmode__slider"></span>
-            </label>
-        </nav>
+        ${headerContent("Bookmarks")}
     </header>
 
     <main>
@@ -36,30 +27,14 @@ root.innerHTML = `
     </main>
 
     <footer>
-        <nav class="footer__nav">
-            <menu class="footer__menu">
-                <li class="menu__item">
-                    <a href="index.html" class="menu__link">
-                        <i class="fa-solid fa-film footer__icon footer__icon--active"></i>
-                    </a>
-                </li>
-                <li class="menu__item">
-                    <a href="" class="menu__link">
-                        <i class="fa-solid fa-ticket footer__icon"></i>
-                    </a>
-                </li>
-                <li class="menu__item">
-                    <a href="bookmarks.html" class="menu__link">
-                        <i class="fa-regular fa-bookmark footer__icon"></i>
-                    </a>
-                </li>
-            </menu>
-        </nav>
+        ${footerContent()}
     </footer>
 `;
 
+
 let nowshowingGallery = root.querySelector(".nowshowing__gallery");
 let popularGallery = root.querySelector(".popular__gallery");
+
 
 
 
@@ -140,7 +115,7 @@ fetchNowShowing();
 // --- POPULAR --- //
 
 function fetchPopular() {
-    let urlPopular = `https://api.themoviedb.org/3/movie/now_playing?page=${pagePopular}`;
+    let urlPopular = `https://api.themoviedb.org/3/movie/popular?language=en-US&page=${pagePopular}`;
 
     fetch(urlPopular, fetchOptions)
         .then(res => res.json())
@@ -186,23 +161,7 @@ function fetchPopular() {
             `;
             }).join("");
 
-            fetch('https://api.themoviedb.org/3/genre/movie/list', fetchOptions)
-                .then(res => res.json())
-                .then(data => {
-                    let genreList = data.genres;
-                    // console.log(genreList);
-
-                    let movieGenreContainers = document.querySelectorAll(".movie__genre__container");
-                    movieGenreContainers.forEach(container => {
-                        let movieId = container.getAttribute("data-id");
-                        let genreIds = readFromLocalStorage(movieId);
-
-                        container.innerHTML = genreIds.map(genre => {
-                            let genreName = findGenreName(genreList, genre);
-                            return `<span class="movie__genre">${genreName}</span>`;
-                        }).join("");
-                    });
-                });
+            addGenres();
         })
         .catch(err => console.error(err));
 }
