@@ -1,0 +1,180 @@
+
+/* --- ELEMENTS --- */
+
+#app {
+    min-height: 100vh;
+}
+
+#app, .header__nav, .footer__nav {
+    max-width: var(--app-width);
+    margin: 0 auto;
+}
+
+.header__nav {
+    height: 3.75rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+
+    padding: 0 1.5rem;
+}
+
+
+
+/* --- COMPONENTS --- */
+
+.seemore__btn {
+    color: var(--color-elements);
+    border: solid 1px var(--color-elements);
+    border-radius: 100px;
+
+    font-size: 0.625rem;
+
+    cursor: pointer;
+
+    transition: opacity 100ms;
+
+    padding: 0.25rem 0.5rem;
+}
+.seemore__btn:hover {
+    opacity: 0.75;
+}
+
+
+
+/* --- TEXT --- */
+
+.header__headline {
+    color: var(--color-headline);
+
+    font: var(--font-headline);
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.section__headline {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+
+    color: var(--color-headline);
+
+    font: var(--font-headline);
+}
+
+
+
+/* --------- MOVIE --------- */
+
+.movie__poster {
+    width: 5.375rem;
+
+    border-radius: 5px;
+    object-fit: cover;
+
+    transition: opacity 100ms;
+}
+.movie__poster:hover {
+    opacity: 0.9;
+}
+
+.movie__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.movie__headline {
+    color: light-dark(#000, #fff);
+
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.movie__title {
+    color: var(--color-text);
+
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+
+/* --- MOVIE RATING --- */
+
+.movie__rating {
+    color: var(--color-gray);
+
+    font-size: 0.75rem;
+}
+
+.movie__rating__icon {
+    color: #FFC319;
+}
+
+
+/* --- MOVIE GENRES --- */
+
+.movie__genre__container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.movie__genre {
+    border-radius: 100px;
+    background-color: light-dark(var(--color-darkblue), var(--color-lightblue));
+
+    color: light-dark(var(--color-lightblue), var(--color-darkblue));
+
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    padding: 0.25rem 0.75rem;
+}
+
+
+/* --- MOVIE RELEASE DATE --- */
+
+.movie__releasedate {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-text);
+    font-size: 0.75rem;
+}
+
+.movie__releasedate__icon {
+    color: var(--color-text);
+}
+
+
+/* --- MOVIE USER RATING --- */
+
+.movie__userrating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    position: relative;
+
+    color: var(--color-text);
+    font-size: 1rem;
+}
+
+.movie__userrating__icon {
+    cursor: pointer;
+
+    transition: opacity 100ms;
+}
+.movie__userrating__icon:hover {
+    opacity: 0.75;
+}

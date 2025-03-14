@@ -1,0 +1,53 @@
+
+main {
+    padding: 0 1.5rem;
+}
+
+
+.movie__poster {
+    width: 5.375rem;
+}
+
+
+.centered {
+    padding: 0 2.5rem;
+}
+
+
+
+/* --- MOVIE --- */
+
+.userlist__movie {
+    width: 100%;
+
+    display: flex;
+    gap: 1rem;
+
+    position: relative;
+}
+
+.movie__text {
+    margin-right: 1.5rem;
+}
+
+
+
+/* --- WATCHLIST --- */
+
+.bookmark__remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    font-size: 1.2rem;
+
+    color: var(--color-gray);
+
+    cursor: pointer;
+
+    transition: color 100ms;
+}
+
+.bookmark__remove:hover {
+    color: var(--color-text);
+}

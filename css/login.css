@@ -1,0 +1,60 @@
+
+main {
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* --- REQUEST --- */
+
+.request__link {
+    color: var(--color-text);
+    text-align: center;
+    text-decoration: underline;
+    
+    padding: 0 2rem;
+}
+
+
+/* --- SESSION --- */
+
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+label {
+    display: block;
+    font-size: 0.75rem;
+
+    padding-bottom: 0.25rem;
+}
+
+.login__submit {
+    border: 0;
+    border-radius: 5px;
+
+    font-size: 0.75rem;
+
+    padding: 0.35rem 1.25rem;
+    margin-top: 0.5rem;
+}
+
+
+.login__alert {
+    max-width: var(--app-width);
+
+    position: fixed;
+    top: 3.5rem;
+    bottom: 3.5rem;
+    left: 2rem;
+    right: 2rem;
+    z-index: 999999999;
+
+    background-color: var(--color-bg);
+    box-shadow: 0 0 20px #00000060;
+
+    margin: 0 auto;
+}

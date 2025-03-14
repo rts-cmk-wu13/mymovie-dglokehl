@@ -1,0 +1,116 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: 'Mulish', sans-serif;
+    font-weight: 400;
+    letter-spacing: 2%;
+
+    transition: background-color 200ms ease-out, color 200ms ease-out;
+}
+
+li {
+    list-style-type: none;
+}
+
+img {
+    width: 100%;
+    height: auto;
+
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+
+/* --- ROOT --- */
+
+:root {
+    background-color: var(--color-bg);
+
+    --font-headline: 900 1rem 'Merriweather', serif;
+
+    color-scheme: light dark;
+
+    --color-bg: light-dark(#FFFFFF, #15141F);
+    --color-elements: light-dark(#AAA9B1, #E5E4EA);
+
+    --color-headline: light-dark(#110E47, #DBE3FF);
+    --color-text: light-dark(#000000, #F0EFFA);
+    --color-black-white: light-dark(#000000, #FFFFFF);
+
+    --color-gray: #9C9C9C;
+
+    --color-darkblue: #88A4E8;
+    --color-lightblue: #DBE3FF;
+
+    --app-width: 23.4375rem;
+}
+
+
+
+/* --- DARKMODE --- */
+
+[data-dark="true"] {
+    color-scheme: dark;
+}
+
+[data-dark="false"] {
+    color-scheme: light;
+}
+
+
+.darkmode {
+    width: 38px;
+    height: 21px;
+
+    position: relative;
+
+    border-radius: 100px;
+    background-color: light-dark(#AAA9B1, #FFFFFF);
+
+    cursor: pointer;
+}
+
+.darkmode__switch {
+    display: none;
+}
+
+
+.darkmode__slider, .darkmode {
+    -webkit-transition: 350ms ease-out;
+    transition: 350ms ease-out;
+}
+
+.darkmode__slider {
+    height: 18px;
+    width: 18px;
+
+    display: block;
+
+    position: absolute;
+    z-index: 999;
+
+    border-radius: 100px;
+    background-color: light-dark(#FFFFFF, #000000);
+
+    margin: 1.5px;
+}
+
+input:checked + .darkmode__slider {
+    margin-left: 18px;
+}
+

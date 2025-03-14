@@ -1,0 +1,144 @@
+
+.backarrow {
+    color: #FFF;
+    text-shadow: 0px 0px 5px #00000075;
+}
+
+
+/* --- MAIN --- */
+
+.main__wrapper {
+    position: relative;
+}
+
+.movie__trailer__wrapper {
+    max-width: var(--app-width);
+
+    position: fixed;
+    top: 0;
+    z-index: -1;
+}
+
+.movie__trailer {
+    height: 16rem;
+    object-fit: cover;
+}
+
+main {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    position: absolute;
+    z-index: 2;
+    margin-top: 12.25rem;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    background-color: var(--color-bg);
+
+    padding: 1.5rem;
+}
+
+
+/* --- MOVIE DETAILS --- */
+
+.movie__details {
+    position: relative;
+}
+
+.movie__headline {
+    width: 60%;
+
+    margin-bottom: 0.5rem;
+}
+
+.bookmark__btn {
+    position: absolute;
+    top: 0.35rem;
+    right: 0rem;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    transition: opacity 100ms;
+}
+.bookmark__btn:hover {
+    opacity: 0.75;
+}
+
+.movie__genre__container {
+    max-width: 90%;
+
+    justify-content: center;
+
+    margin: 1rem auto;
+}
+
+
+.movie__info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.movie__info__text:first-of-type {
+    color: var(--color-gray);
+    font-weight: 400;
+    margin-bottom: 0.25rem;
+}
+
+.movie__userrating {
+    justify-content: center;
+
+    margin-top: 1rem;
+}
+
+
+/* --- DESCRIPTION --- */
+
+.movie__description {
+    color: var(--color-gray);
+
+    font-size: 0.75rem;
+    line-height: 1.8333;
+
+    margin-top: 0.5rem;
+}
+
+
+
+/* --- CAST --- */
+
+.movie__cast {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+
+    margin-top: 1rem;
+}
+
+.actor {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    color: var(--color-headline);
+
+    font-size: 0.75rem;
+    overflow-wrap: anywhere;
+}
+
+.actor__img {
+    /* width: 4.5rem; */
+    height: 4.5rem;
+    object-fit: cover;
+
+    border-radius: 5px;
+}
