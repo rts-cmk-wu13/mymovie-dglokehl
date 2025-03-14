@@ -1,72 +1,4 @@
 
-/* --- HEADER, FOOTER --- */
-
-header, footer {
-    height: 60px;
-}
-
-.header__nav {
-    background-color: var(--color-bg);
-}
-
-
-.footer__nav {
-    height: 3.75rem;
-
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    background-color: light-dark(#fff, #000);
-
-    padding: 0 3.125rem;
-}
-
-.footer__menu {
-    height: 100%;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.footer__icon {
-    color: var(--color-text);
-}
-
-.footer__icon--active {
-    box-shadow: 0 5px 6px #7676BD33;
-}
-
-
-
-/* --- MAIN --- */
-
-main {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-
-    margin-top: 1rem;
-}
-
-.section__headline {
-    position: sticky;
-    top: 60px;
-    z-index: 999;
-
-    background-color: var(--color-bg);
-
-    padding: 0 1.5rem 1rem;
-}
-
-.movie__poster {
-    border-radius: 5px;
-}
-
-
-
 /* --- NOW SHOWING --- */
 
 .nowshowing__gallery {
@@ -88,6 +20,11 @@ main {
     flex-shrink: 0;
 }
 
+.nowshowing__movie .movie__poster {
+    width: 100%;
+    height: 13.25rem;
+}
+
 
 
 /* --- POPULAR --- */
@@ -107,19 +44,4 @@ main {
 .popular__movie {
     display: flex;
     gap: 1rem;
-}
-
-.popular__movie .movie__poster {
-    width: 5.375rem;
-}
-
-.movie__text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.movie__releasedate {
-    color: var(--color-text);
-    font-size: 0.75rem;
 }

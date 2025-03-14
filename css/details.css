@@ -4,23 +4,15 @@
     text-shadow: 0px 0px 5px #00000075;
 }
 
-.bookmark__btn {
-    position: absolute;
-    top: 0.35rem;
-    right: 0rem;
 
-    font-size: 1rem;
-
-    cursor: pointer;
-}
-
+/* --- MAIN --- */
 
 .main__wrapper {
     position: relative;
 }
 
 .movie__trailer__wrapper {
-    max-width: 23.4375rem;
+    max-width: var(--app-width);
 
     position: fixed;
     top: 0;
@@ -54,10 +46,19 @@ main {
 }
 
 .movie__headline {
-    /* width: 12.375rem; */
     width: 60%;
 
     margin-bottom: 0.5rem;
+}
+
+.bookmark__btn {
+    position: absolute;
+    top: 0.35rem;
+    right: 0rem;
+
+    font-size: 1rem;
+
+    cursor: pointer;
 }
 
 .movie__genre__container {
@@ -83,6 +84,11 @@ main {
     margin-bottom: 0.25rem;
 }
 
+.movie__userrating {
+    justify-content: center;
+
+    margin-top: 1rem;
+}
 
 
 /* --- DESCRIPTION --- */

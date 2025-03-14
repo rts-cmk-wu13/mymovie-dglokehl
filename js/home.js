@@ -1,9 +1,11 @@
 
 // --- LAYOUT --- //
 
+let headerText = "MyMovies";
+
 root.innerHTML = `
     <header>
-        ${headerContent("Bookmarks")}
+        ${headerContent(headerText)}
     </header>
 
     <main>
@@ -31,10 +33,11 @@ root.innerHTML = `
     </footer>
 `;
 
+footerActivePage("home");
+
 
 let nowshowingGallery = root.querySelector(".nowshowing__gallery");
 let popularGallery = root.querySelector(".popular__gallery");
-
 
 
 
@@ -42,6 +45,7 @@ let popularGallery = root.querySelector(".popular__gallery");
 
 let pageNowShowing = 1;
 let pagePopular = 1;
+
 let maxPages = 20;
 
 let seemoreBtns = document.querySelectorAll(".seemore__btn");
@@ -79,9 +83,10 @@ function fetchNowShowing() {
                 // console.log(movie);
 
                 let movieId = movie.id;
-                let moviePosterUrl = imgUrlLarge + movie.poster_path;
+                let moviePosterUrl = getImage(movie.poster_path, imgUrlMedium);
 
                 let movieTitle = movie.title;
+
                 let imdbRating = movie.vote_average.toFixed(1);
 
 
@@ -126,42 +131,44 @@ function fetchPopular() {
                 // console.log(movie);
 
                 let movieId = movie.id;
-                let moviePosterUrl = imgUrlSmall + movie.poster_path;
+                let moviePosterUrl = getImage(movie.poster_path, imgUrlSmall);
 
                 let movieTitle = movie.title;
+
                 let imdbRating = movie.vote_average.toFixed(1);
                 let movieReleaseDate = formatDate(movie.release_date);
 
-                saveToLocalStorage(movieId, movie.genre_ids);
+                let movieGenreIds = movie.genre_ids;
 
                 return `
-            <article class="popular__movie">
-                <a href="details.html?id=${movieId}">
-                    <img loading="lazy" src="${moviePosterUrl}" alt="${movieTitle}" class="movie__poster">
-                </a>
+                    <article class="popular__movie">
+                        <a href="details.html?id=${movieId}">
+                            <img loading="lazy" src="${moviePosterUrl}" alt="${movieTitle}" class="movie__poster">
+                        </a>
 
-                <div class="movie__text">
-                    <a href="details.html?id=${movieId}">
-                        <h3 class="movie__title popular__movie__title">
-                            ${movieTitle}
-                        </h3>
-                    </a>
+                        <div class="movie__text">
+                            <a href="details.html?id=${movieId}">
+                                <h3 class="movie__title popular__movie__title">
+                                    ${movieTitle}
+                                </h3>
+                            </a>
 
-                    <span class="movie__rating">
-                        <i class="fa-solid fa-star movie__rating__icon"></i> ${imdbRating}/10 IMDb
-                    </span>
+                            <span class="movie__rating">
+                                <i class="fa-solid fa-star movie__rating__icon"></i> ${imdbRating}/10 IMDb
+                            </span>
 
-                    <div class="movie__genre__container" data-id="${movieId}"></div>
+                            <div class="movie__genre__container">
+                                ${addGenres(movieGenreIds)}
+                            </div>
                         
-                    <span class="movie__releasedate">
-                        <i class="fa-regular fa-calendar"></i> ${movieReleaseDate}
-                    </span>
-                </div>
-            </article>
-            `;
+                            <span class="movie__releasedate">
+                                <i class="fa-regular fa-calendar movie__releasedate__icon"></i> ${movieReleaseDate}
+                            </span>
+                        </div>
+                    </article>
+                `;
             }).join("");
 
-            addGenres();
         })
         .catch(err => console.error(err));
 }

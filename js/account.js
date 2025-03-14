@@ -3,8 +3,8 @@
 
 let accountId = "dglokehl";
 
-let requestToken = readFromLocalStorage("requestToken");
-let sessionId = readFromLocalStorage("sessionId");
+// let requestToken = "87f22b230f6c82600045ecd7a728c414caca0312"
+let sessionId = "0332fe98bdca3666ae453bdf67a616d1415d5c13";
 
 
 
@@ -12,12 +12,10 @@ let sessionId = readFromLocalStorage("sessionId");
 
 function fetchRequestToken() {
     fetch('https://api.themoviedb.org/3/authentication/token/new', fetchOptions)
-        .then(res => {
-            console.log("requestToken - res", res);
-            return res.json();
-        })
+        .then(res => res.json())
         .then(data => {
-            console.log("requestToken - data", data);
+            console.log(data);
+            requestToken = data.request_token;
             saveToLocalStorage("requestToken", data.request_token);
         })
         .catch(err => console.error(err));

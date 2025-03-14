@@ -1,0 +1,66 @@
+
+header, footer {
+    height: 60px;
+}
+
+
+/* --- HEADER NAV --- */
+
+.header__nav {
+    background-color: var(--color-bg);
+}
+
+
+
+/* --- FOOTER NAV --- */
+
+.footer__nav {
+    height: 3.75rem;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    background-color: light-dark(#fff, #000);
+
+    padding: 0 3.125rem;
+}
+
+.footer__menu {
+    height: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer__icon {
+    color: var(--color-text);
+}
+
+.footer__icon--active {
+    box-shadow: 0 5px 6px #7676BD33;
+}
+
+
+
+/* --- MAIN --- */
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    margin-top: 1rem;
+}
+
+.section__headline {
+    position: sticky;
+    top: 60px;
+    z-index: 99;
+
+    background-color: var(--color-bg);
+
+    padding: 0 1.5rem 1rem;
+}

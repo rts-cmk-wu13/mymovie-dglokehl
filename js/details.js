@@ -29,23 +29,34 @@ let params = new URLSearchParams(search);
 let movieId = params.get("id");
 
 
-fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_states%2Ccredits%2Crelease_dates&session_id=${sessionId}&language=en-US`, fetchOptions)
+fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_states%2Ccredits%2Crelease_dates%2Cvideos&session_id=${sessionId}&language=en-US`, fetchOptions)
     .then(res => res.json())
     .then(data => {
-        console.log(data);
+        // console.log(data);
 
-        let movieBackgroundUrl = imgUrlOriginal + data.backdrop_path;
+        let movieUserRating;
+        let movieWatchlist;
+        if (sessionId) {
+            movieUserRating = data.account_states.rated.value;
+            movieWatchlist = data.account_states.watchlist;
+        } else {
+            movieUserRating = 0;
+            movieWatchlist = false;
+        }
+
+
+        let movieBackgroundUrl = getImage(data.backdrop_path, imgUrlLarge);
 
         let movieTitle = data.title;
-        let imdbRating = data.vote_average.toFixed(1);
+        document.title = `MyMovies - ${movieTitle}`;
 
+        let imdbRating = data.vote_average.toFixed(1);
         let movieLength = calcRuntime(data.runtime);
         let movieLanguage = formatLanguage(data.original_language);
         let movieRating = getRating(countryChosen, data);
 
         let movieDesc = data.overview;
 
-        let movieWatchlist = data.account_states.watchlist;
 
         let bookmarkBtnFill;
         if (movieWatchlist) {
@@ -88,6 +99,8 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_
                             <p class="movie__info__text">${movieRating}</p>
                         </div>
                     </div>
+
+                    <div class="movie__userrating" data-id="${movieId}" data-rating="${movieUserRating}"></div>
                 </section>
 
                 <section>
@@ -105,13 +118,72 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_
             </main>
         `;
 
-        let genreList = data.genres;
-        let genreIds = [];
-        genreList.forEach(genre => {
-            genreIds.push(genre.id);
+
+
+        // --- WATCHLIST --- //
+
+        let bookmarkBtn = document.querySelector(".bookmark__btn");
+        bookmarkBtn.addEventListener("click", watchlistAddRemove);
+
+
+
+        // --- GENRES --- //
+
+        let movieGenreContainer = document.querySelector(".movie__genre__container");
+        movieGenreContainer.innerHTML = data.genres.map(genre => {
+            let genreName = genre.name;
+            return `<span class="movie__genre">${genreName}</span>`;
+        }).join("");
+
+
+
+        // --- USER RATING --- //
+
+        let userRatingContainer = Array.from(document.querySelectorAll(".movie__userrating"));
+        userRatingContainer.forEach(container => {
+            let userRating = container.getAttribute("data-rating");
+            let movieId = container.getAttribute("data-id");
+
+            for (let i = 0; i < 5; i++) {
+                let num = i + 1;
+                if (num <= userRating) {
+                    container.innerHTML += `
+                        <i class="fa-solid fa-star movie__userrating__icon" data-star="${num}"></i>
+                    `;
+                } else {
+                    container.innerHTML += `
+                        <i class="fa-regular fa-star movie__userrating__icon" data-star="${num}"></i>
+                    `;
+                }
+            }
+
+            let userRatingStars = Array.from(container.querySelectorAll(".movie__userrating__icon"));
+
+            userRatingStars.forEach(currentStar => {
+                currentStar.addEventListener("click", function () {
+                    addUserRating(currentStar, movieId);
+                });
+            });
+
         });
-        saveToLocalStorage(movieId, genreIds);
-        addGenres();
+
+
+
+        // --- SEE MORE --- //
+
+        let seemoreBtn = document.querySelector(".seemore__btn");
+        seemoreBtn.addEventListener("click", function () {
+            if (seemoreBtn.classList.contains("active")) {
+                castMap(castListShort);
+                seemoreBtn.classList.remove("active");
+                seemoreBtn.textContent = "See more";
+            } else {
+                castMap(castList);
+                seemoreBtn.classList.add("active");
+                seemoreBtn.textContent = "See less";
+            }
+        });
+
 
 
         // --- CAST --- //
@@ -131,13 +203,12 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_
             movieCastContainer.innerHTML = array.map(actor => {
                 // console.log(actor);
 
-                let actorImgUrl = actor.profile_path;
+                let actorImgUrl = getImage(actor.profile_path, imgUrlSmall);
                 let actorName = actor.name;
-
 
                 return `
                     <article class="actor">
-                        <img src="${imgUrlSmall + actorImgUrl}" alt="${actorName}" class="actor__img">
+                        <img loading="lazy" src="${actorImgUrl}" alt="${actorName}" class="actor__img">
                         <h3>${actorName}</h3>
                     </article>
                 `;
@@ -145,22 +216,5 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_
         }
         castMap(castListShort);
 
-
-        let seemoreBtn = document.querySelector(".seemore__btn");
-        seemoreBtn.addEventListener("click", function () {
-            if (seemoreBtn.classList.contains("active")) {
-                castMap(castListShort);
-                seemoreBtn.classList.remove("active");
-                seemoreBtn.textContent = "See more";
-            } else {
-                castMap(castList);
-                seemoreBtn.classList.add("active");
-                seemoreBtn.textContent = "See less";
-            }
-        });
-
-
-        let bookmarkBtn = document.querySelector(".bookmark__btn");
-        bookmarkBtn.addEventListener("click", addToWatchlist);
     })
     .catch(err => console.error(err));

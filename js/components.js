@@ -13,11 +13,6 @@ const fetchOptions = {
 };
 
 
-let imgUrlSmall = "https://image.tmdb.org/t/p/w200";
-let imgUrlLarge = "https://image.tmdb.org/t/p/w500";
-let imgUrlOriginal = "https://image.tmdb.org/t/p/original";
-
-
 
 // --- LAYOUT --- //
 
@@ -43,22 +38,48 @@ function footerContent() {
             <menu class="footer__menu">
                 <li class="menu__item">
                     <a href="index.html" class="menu__link">
-                        <i class="fa-solid fa-film footer__icon footer__icon--active"></i>
+                        <i class="fa-solid fa-film footer__icon home"></i>
                     </a>
                 </li>
                 <li class="menu__item">
-                    <a href="" class="menu__link">
-                        <i class="fa-solid fa-ticket footer__icon"></i>
+                    <a href="userlist.html?list=ratings" class="menu__link">
+                        <i class="fa-regular fa-star footer__icon ratings"></i>
                     </a>
                 </li>
                 <li class="menu__item">
-                    <a href="bookmarks.html" class="menu__link">
-                        <i class="fa-regular fa-bookmark footer__icon"></i>
+                    <a href="userlist.html?list=watchlist" class="menu__link">
+                        <i class="fa-regular fa-bookmark footer__icon watchlist"></i>
                     </a>
                 </li>
             </menu>
         </nav>
     `;
+}
+
+function footerActivePage(page) {
+    let footerIcons = root.querySelectorAll(".footer__icon");
+    footerIcons.forEach(icon => {
+        if (icon.classList.contains(page)) {
+            icon.classList.add("footer__icon--active");
+        }
+    });
+}
+
+
+
+// --- IMAGES --- //
+
+let imgUrlSmall = "https://image.tmdb.org/t/p/w185";
+let imgUrlMedium = "https://image.tmdb.org/t/p/w342";
+let imgUrlLarge = "https://image.tmdb.org/t/p/w780";
+
+
+function getImage(path, size) {
+    if (!path) {
+        return "/svg/placeholder.svg";
+    } else {
+        return size + path;
+    }
 }
 
 
@@ -98,28 +119,6 @@ function formatDate(input) {
 
 
 
-// --- GENRES --- //
-
-function addGenres() {
-    fetch('https://api.themoviedb.org/3/genre/movie/list', fetchOptions)
-        .then(res => res.json())
-        .then(data => {
-            let movieGenreContainers = document.querySelectorAll(".movie__genre__container");
-            movieGenreContainers.forEach(container => {
-                let movieId = container.getAttribute("data-id");
-                let genreList = data.genres;
-                let movieGenres = readFromLocalStorage(movieId);
-
-                container.innerHTML = movieGenres.map(genre => {
-                    let genreName = genreList.find(genreList => genreList.id === genre).name;
-                    return `<span class="movie__genre">${genreName}</span>`;
-                }).join("");
-            });
-        });
-}
-
-
-
 // --- RATING --- //
 
 let countryChosen = "US";
@@ -140,3 +139,120 @@ function getRating(countryChosen, data) {
 
     return rating;
 }
+
+
+
+// --- GENRES --- //
+
+let genreList = [];
+
+fetch('https://api.themoviedb.org/3/genre/movie/list', fetchOptions)
+    .then(res => res.json())
+    .then(data => {
+        data.genres.forEach(genre => {
+            genreList.push(genre);
+        });
+    });
+
+
+function addGenres(genreIds) {
+    return genreIds.map(id => {
+        let genreName = genreList.find(genre => genre.id === id).name;
+        return `<span class="movie__genre">${genreName}</span>`;
+    }).join("");
+}
+
+
+// let genreList = [
+//     {
+//         "id": 28,
+//         "name": "Action"
+//     },
+//     {
+//         "id": 12,
+//         "name": "Adventure"
+//     },
+//     {
+//         "id": 16,
+//         "name": "Animation"
+//     },
+//     {
+//         "id": 35,
+//         "name": "Comedy"
+//     },
+//     {
+//         "id": 80,
+//         "name": "Crime"
+//     },
+//     {
+//         "id": 99,
+//         "name": "Documentary"
+//     },
+//     {
+//         "id": 18,
+//         "name": "Drama"
+//     },
+//     {
+//         "id": 10751,
+//         "name": "Family"
+//     },
+//     {
+//         "id": 14,
+//         "name": "Fantasy"
+//     },
+//     {
+//         "id": 36,
+//         "name": "History"
+//     },
+//     {
+//         "id": 27,
+//         "name": "Horror"
+//     },
+//     {
+//         "id": 10402,
+//         "name": "Music"
+//     },
+//     {
+//         "id": 9648,
+//         "name": "Mystery"
+//     },
+//     {
+//         "id": 10749,
+//         "name": "Romance"
+//     },
+//     {
+//         "id": 878,
+//         "name": "Science Fiction"
+//     },
+//     {
+//         "id": 10770,
+//         "name": "TV Movie"
+//     },
+//     {
+//         "id": 53,
+//         "name": "Thriller"
+//     },
+//     {
+//         "id": 10752,
+//         "name": "War"
+//     },
+//     {
+//         "id": 37,
+//         "name": "Western"
+//     }
+// ];
+
+
+
+// let movieTrailerUrl = data.videos.results.find((video) => video.type === "Trailer").key
+// function addBackdrop(trailerUrl, imageUrl) {
+//     if (trailerUrl) {
+//         return `
+//             <iframe src="https://www.youtube.com/embed/${trailerUrl}?si=muxwYGF8RtimRUnb" title="YouTube video player" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+//         `;
+//     } else {
+//         return `
+//             <img src="${imageUrl}" alt="" class="movie__trailer">
+//         `;
+//     }
+// }
