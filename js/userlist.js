@@ -25,14 +25,21 @@ let mainElm = root.querySelector("main");
 
 footerActivePage(listType);
 
-
-if (listType === "ratings") {
-    fetchRatings();
-    document.title = "MyMovies - My Ratings";
-}
-if (listType === "watchlist") {
-    fetchWatchlist();
-    document.title = "MyMovies - My Watchlist";
+if (isLoggedIn) {
+    if (listType === "ratings") {
+        fetchRatings();
+        document.title = "MyMovies - My Ratings";
+    }
+    if (listType === "watchlist") {
+        fetchWatchlist();
+        document.title = "MyMovies - My Watchlist";
+    }
+} else {
+    mainElm.innerHTML = `
+        <div class="centered">
+            <p>Please log into your TheMovieDb account to see your ${listType}</p>
+        </div>
+    `;
 }
 
 
@@ -51,7 +58,7 @@ function fetchRatings() {
                 `;
             } else {
                 mainElm.innerHTML += data.results.map(movie => {
-                    console.log(movie);
+                    // console.log(movie);
 
                     let movieId = movie.id;
                     let moviePosterUrl = getImage(movie.poster_path, imgUrlSmall);
@@ -133,11 +140,11 @@ function fetchWatchlist() {
     fetch(`https://api.themoviedb.org/3/account/${accountId}/watchlist/movies`, fetchOptions)
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            // console.log(data);
 
             if (data.results.length < 1) {
                 mainElm.innerHTML = `
-                    <p class="error">Your watchlist is empty</p>
+                    <p class="centered">Your watchlist is empty</p>
                 `;
             } else {
                 mainElm.innerHTML += data.results.map(movie => {

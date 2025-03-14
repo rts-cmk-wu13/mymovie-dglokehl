@@ -1,13 +1,16 @@
 
+main {
+    padding: 0 1.5rem;
+}
+
+
 .movie__poster {
     width: 5.375rem;
 }
 
 
-.error {
-    position: fixed;
-    top: 35%;
-    color: var(--color-gray);
+.centered {
+    padding: 0 2.5rem;
 }
 
 
@@ -24,7 +27,7 @@
 }
 
 .movie__text {
-    margin-right: 2rem;
+    margin-right: 1.5rem;
 }
 
 
@@ -41,6 +44,8 @@
     color: var(--color-gray);
 
     cursor: pointer;
+
+    transition: color 100ms;
 }
 
 .bookmark__remove:hover {

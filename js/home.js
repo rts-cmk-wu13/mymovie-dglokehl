@@ -77,7 +77,7 @@ function fetchNowShowing() {
     fetch(urlNowShowing, fetchOptions)
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            // console.log(data);
 
             nowshowingGallery.innerHTML += data.results.map(movie => {
                 // console.log(movie);
@@ -91,22 +91,22 @@ function fetchNowShowing() {
 
 
                 return `
-            <article class="nowshowing__movie">
-                <a href="details.html?id=${movieId}">
-                    <img loading="lazy" src="${moviePosterUrl}" alt="${movieTitle}" class="movie__poster">
-                </a>
-                <div class="movie__text">
-                    <a href="details.html?id=${movieId}">
-                        <h3 class="movie__title nowshowing__movie__title">
-                            ${movieTitle}
-                        </h3>
-                    </a>
+                    <article class="nowshowing__movie">
+                        <a href="details.html?id=${movieId}">
+                            <img loading="lazy" src="${moviePosterUrl}" alt="${movieTitle}" class="movie__poster">
+                        </a>
+                        <div class="movie__text">
+                            <a href="details.html?id=${movieId}">
+                                <h3 class="movie__title nowshowing__movie__title">
+                                    ${movieTitle}
+                                </h3>
+                            </a>
 
-                    <span class="movie__rating">
-                        <i class="fa-solid fa-star movie__rating__icon"></i> ${imdbRating}/10 IMDb
-                    </span>
-                </div>
-            </article>
+                            <span class="movie__rating">
+                                <i class="fa-solid fa-star movie__rating__icon"></i> ${imdbRating}/10 IMDb
+                            </span>
+                        </div>
+                    </article>
             `;
             }).join("");
 
@@ -125,7 +125,7 @@ function fetchPopular() {
     fetch(urlPopular, fetchOptions)
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            // console.log(data);
 
             popularGallery.innerHTML += data.results.map(movie => {
                 // console.log(movie);

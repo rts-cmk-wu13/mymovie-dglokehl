@@ -1,6 +1,10 @@
 
 /* --- ELEMENTS --- */
 
+#app {
+    min-height: 100vh;
+}
+
 #app, .header__nav, .footer__nav {
     max-width: var(--app-width);
     margin: 0 auto;
@@ -35,7 +39,12 @@
 
     cursor: pointer;
 
+    transition: opacity 100ms;
+
     padding: 0.25rem 0.5rem;
+}
+.seemore__btn:hover {
+    opacity: 0.75;
 }
 
 
@@ -69,6 +78,11 @@
 
     border-radius: 5px;
     object-fit: cover;
+
+    transition: opacity 100ms;
+}
+.movie__poster:hover {
+    opacity: 0.9;
 }
 
 .movie__text {
@@ -154,4 +168,13 @@
 
     color: var(--color-text);
     font-size: 1rem;
+}
+
+.movie__userrating__icon {
+    cursor: pointer;
+
+    transition: opacity 100ms;
+}
+.movie__userrating__icon:hover {
+    opacity: 0.75;
 }

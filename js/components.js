@@ -19,7 +19,9 @@ const fetchOptions = {
 function headerContent(headline) {
     return `
         <nav class="header__nav">
-            <i class="fa-solid fa-bars-staggered"></i>
+            <a href="login.html" class="login__link">
+                <i class="fa-solid fa-user"></i>
+            </a>
 
             <h1 class="header__headline">${headline}</h1>
 
@@ -38,17 +40,17 @@ function footerContent() {
             <menu class="footer__menu">
                 <li class="menu__item">
                     <a href="index.html" class="menu__link">
-                        <i class="fa-solid fa-film footer__icon home"></i>
+                    <i class="fa-solid fa-house footer__icon home"></i>
                     </a>
                 </li>
                 <li class="menu__item">
                     <a href="userlist.html?list=ratings" class="menu__link">
-                        <i class="fa-regular fa-star footer__icon ratings"></i>
+                        <i class="fa-solid fa-star footer__icon ratings"></i>
                     </a>
                 </li>
                 <li class="menu__item">
                     <a href="userlist.html?list=watchlist" class="menu__link">
-                        <i class="fa-regular fa-bookmark footer__icon watchlist"></i>
+                        <i class="fa-solid fa-bookmark footer__icon watchlist"></i>
                     </a>
                 </li>
             </menu>

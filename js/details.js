@@ -29,14 +29,15 @@ let params = new URLSearchParams(search);
 let movieId = params.get("id");
 
 
-fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=account_states%2Ccredits%2Crelease_dates%2Cvideos&session_id=${sessionId}&language=en-US`, fetchOptions)
+
+fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=credits%2Crelease_dates%2Cvideos%2Caccount_states&session_id=${sessionId}&language=en-US`, fetchOptions)
     .then(res => res.json())
     .then(data => {
         // console.log(data);
 
         let movieUserRating;
         let movieWatchlist;
-        if (sessionId) {
+        if (isLoggedIn) {
             movieUserRating = data.account_states.rated.value;
             movieWatchlist = data.account_states.watchlist;
         } else {

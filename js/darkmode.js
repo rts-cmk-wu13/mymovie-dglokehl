@@ -13,16 +13,16 @@ switchElm.addEventListener("change", function () {
 });
 
 
-let isDarkMode = readFromLocalStorage("isDarkMode");
+let isDarkMode = JSON.parse(readFromLocalStorage("isDarkMode"));
 let browserDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 // console.log("matchMedia", browserDark);
 // console.log("localStorage", isDarkMode);
 
 
-let darkState = null;
+let darkState;
 
-if (isDarkMode == null) {
+if (isDarkMode === null) {
     darkState = browserDark;
 } else {
     darkState = isDarkMode;

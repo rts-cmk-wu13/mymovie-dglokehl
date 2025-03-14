@@ -1,6 +1,6 @@
 
 header, footer {
-    height: 60px;
+    height: 3.75rem;
 }
 
 
@@ -23,6 +23,7 @@ header, footer {
     right: 0;
 
     background-color: light-dark(#fff, #000);
+    /* box-shadow: 0 0 8px #2B2D6710; */
 
     padding: 0 3.125rem;
 }
@@ -40,7 +41,7 @@ header, footer {
 }
 
 .footer__icon--active {
-    box-shadow: 0 5px 6px #7676BD33;
+    text-shadow: 0 5px 6px #7676BD33;
 }
 
 
@@ -63,4 +64,29 @@ main {
     background-color: var(--color-bg);
 
     padding: 0 1.5rem 1rem;
+}
+
+
+
+/* --- COMPONENTS --- */
+
+.centered {
+    max-width: var(--app-width);
+
+    display: grid;
+    place-items: center;
+
+    position: fixed;
+    top: 3.75rem;
+    bottom: 3.75rem;
+    left: 0;
+    right: 0;
+
+    overflow: scroll;
+
+    color: var(--color-gray);
+    font-size: 0.9rem;
+    text-align: center;
+
+    margin: 0 auto;
 }
